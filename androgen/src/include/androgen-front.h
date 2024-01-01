@@ -36,6 +36,7 @@ androgen_corpus_handle_t androgen_corpus_open(const char *path);
 void androgen_corpus_close(androgen_corpus_handle_t handle);
 
 /// Loads a unit from the corpus
-int androgen_corpus_load_unit(androgen_corpus_handle_t handle, const char *name, androgen_corpus_unit_t *unit);
+int androgen_corpus_load_unit(androgen_corpus_handle_t handle, 
+               const char *name, androgen_corpus_unit_t *unit);
 
 #endif // ANDROGEN_FRONT_H
