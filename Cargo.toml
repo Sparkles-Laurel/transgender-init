@@ -12,3 +12,11 @@ nix = "0.27.1"
 bson = "2.8.1"
 zstd = "0.13.0"
 rayon = "1.8.0"
+env_logger = "0.10.1"
+log = "0.4.20"
+
+# panic configuration
+[profile.release]
+panic = "abort"
+
+

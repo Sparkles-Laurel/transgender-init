@@ -18,10 +18,6 @@ use std::process;
 // import the necessary libraries for os-release.
 use os_release::OsRelease;
 
-// immport the necessary functions for reading files.
-use std::fs::File;
-use std::io::prelude::*;
-
 // import the functions for delaying the execution.
 use std::thread;
 use std::time::Duration;

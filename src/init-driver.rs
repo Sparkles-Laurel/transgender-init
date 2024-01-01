@@ -2,6 +2,8 @@
 // Copyright (c) 2023-2024 Kıvılcım Leyla Öztürk.
 // Licensed under the MIT License <http://opensource.org/licenses/MIT>
 
+use env_logger::Env;
+
 // holds the source code for the main init driver.
 pub mod driver {
     // import the necessary libraries for self PID checking.
@@ -54,5 +56,73 @@ pub mod driver {
         pub cmdline: String,
         pub init_corpus: String,
         pub kernel_args: Vec<String>,
+    }
+
+    /// The init driver
+    /// This is a singleton struct.
+    pub struct InitDriver {
+        // the init args
+        pub args: InitArgs,
+        // the os-release handler
+        pub os_release: OsRelease,
+
+        // path to the init corpus
+        pub corpus_path: String,
+
+        // the units to start
+        pub corpus: Vec<Box<dyn Target>>,
+    }
+
+    impl InitDriver {
+        /// Creates a new init driver.
+        pub fn new(args: InitArgs, corpus_path: String) -> InitDriver {
+            // load os-release
+            let os_release = OsRelease::new().unwrap();
+            // return the init driver
+            InitDriver {
+                args: args,
+                os_release: os_release,
+                corpus: vec![],
+                corpus_path
+            }
+        }
+
+    }
+
+    impl InitDriver {
+        /// Loads the init corpus.
+        pub fn load_corpus(&mut self) -> Result<(), _> {
+            // the init corpus is formatted as linked BSON objects
+            // Androgen (the controller API linked against the corpus)
+            // already provides the controller functions but there are no safe
+            // wrappers for them yet.
+            // dynamically link the app against the corpus
+            todo!();
+        }
+    }
+
+    impl Target for InitDriver {
+        fn conduct(&self) -> Result<(), String> {
+            // check if we are PID 1.
+            if process::id() == 1 {
+                // Display this cute asf quote from Sparky first.
+                log::info!("\"All women are women, all men are men... And enbies... they're some of the cutest beings in the universe\" - Sparky-Luna");
+                
+                // display logo for the init process:
+                log::info!("Transgender v0.1.0. Copyright (c) 2024 Kıvılcım Leyla Öztürk.");
+
+                // Start units from the corpus.
+                for unit in self.corpus.iter() {
+                    unit.conduct(self.args.clone());
+                }
+
+                // TODO: add concurrency to the init driver and initialise as parallel as possible
+            // consider using rayon for that.
+            } else {
+                // if we are not PID 1, then display this error message.
+                log::error!("Nice try, cutie. But you are not PID 1.");
+                panic!("Tried to invoke init daemon from a process that has a different PID than 1.");
+            }
+        }
     }
 }
