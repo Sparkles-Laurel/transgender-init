@@ -70,7 +70,7 @@ pub mod driver {
         pub corpus_path: String,
 
         // the units to start
-        pub corpus: Vec<Box<dyn Target>>,
+        pub corpus: Vec<Box<dyn Unit>>,
     }
 
     impl InitDriver {
@@ -101,7 +101,7 @@ pub mod driver {
         }
     }
 
-    impl Target for InitDriver {
+    impl Unit for InitDriver {
         fn conduct(&self) -> Result<(), String> {
             // check if we are PID 1.
             if process::id() == 1 {

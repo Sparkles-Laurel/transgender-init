@@ -12,7 +12,7 @@
 // 9. Slices (this one is used for grouping processes)
 
 // the trait that all targets must implement.
-pub trait Target {
-    // Conducts the target.
+pub trait Unit {
+    // Conducts the unit.
     fn conduct(&self, args: InitArgs) -> Result<(), String>;
 }
