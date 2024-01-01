@@ -18,9 +18,9 @@ use std::process;
 // import the necessary libraries for os-release.
 use os_release::OsRelease;
 
-// import the functions for delaying the execution.
-use std::thread;
-use std::time::Duration;
+mod init_driver;
+mod units;
+use init_driver::{InitDriver, InitArgs};
 
 fn main() {
     // check if we are PID 1.
@@ -46,8 +46,16 @@ fn main() {
         // now print the message "Transgender is starting {os_name} {kernel_version}..."
         eprintln!("{} is starting {}...",_INIT_NAME, _OS_NAME);
 
-        // temporary delay for now.
-        thread::sleep(Duration::from_secs(10));
+        // create a new init driver
+        let mut init_driver = InitDriver::new(InitArgs {
+            target_name: "default.target".to_string(),
+            rootfs: "/".to_string(),
+            cmdline: "".to_string(),
+            init_corpus: "/etc/suat/init/corpus.o".to_string(),
+            kernel_args: vec![],
+        });
+
+
         // abnormally exit and cause a kernel panic
         // TODO: actually invoke the init driver.
         process::exit(31);
