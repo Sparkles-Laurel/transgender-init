@@ -20,31 +20,35 @@ use os_release::OsRelease;
 
 mod init_driver;
 mod units;
-use init_driver::{InitDriver, InitArgs};
+use init_driver::{InitArgs, InitDriver};
 
+/// Entry point for the init daemon
 fn main() {
     // check if we are PID 1.
     if process::id() == 1 {
         eprintln!("Nice try, cutie. But you are not PID 1.");
+        process::exit(23);
     } else {
         // okay so we to load os-release first.
         let os_release = OsRelease::new().unwrap();
         // also we need the color of the os name.
         // so read the os color from /etc/os-release.
 
-
         let _INIT_NAME: String = format!(
             "{}{}{}{}{}",
-            "Tr".truecolor(0x74, 0xc7, 0xec),
-            "an".truecolor(0xEB, 0xA0, 0xAC),
-            "sge".truecolor(0xFF, 0xFF, 0xFF),
-            "nd".truecolor(0xEB, 0xA0, 0xAC),
-            "er".truecolor(0x74, 0xc7, 0xec)
+            "Tr".truecolor(0x74, 0xc7, 0xec), // Blue
+            "an".truecolor(0xEB, 0xA0, 0xAC), // Pink
+            "sge".truecolor(0xFF, 0xFF, 0xFF), // White
+            "nd".truecolor(0xEB, 0xA0, 0xAC), // Pink
+            "er".truecolor(0x74, 0xc7, 0xEC) // Blue
         );
 
-        let _OS_NAME: String = format!("\x1B[{}m{}", os_release.extra["ANSI_COLOR"], os_release.pretty_name);
+        let _OS_NAME: String = format!(
+            "\x1B[{}m{}",
+            os_release.extra["ANSI_COLOR"], os_release.pretty_name
+        ); // Colorise os_name according to /etc/os-release
         // now print the message "Transgender is starting {os_name} {kernel_version}..."
-        eprintln!("{} is starting {}...",_INIT_NAME, _OS_NAME);
+        eprintln!("{} is starting {}...", _INIT_NAME, _OS_NAME);
 
         // create a new init driver
         let mut init_driver = InitDriver::new(InitArgs {
@@ -54,7 +58,6 @@ fn main() {
             init_corpus: "/etc/suat/init/corpus.o".to_string(),
             kernel_args: vec![],
         });
-
 
         // abnormally exit and cause a kernel panic
         // TODO: actually invoke the init driver.
