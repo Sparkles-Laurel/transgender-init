@@ -3,5 +3,20 @@
 // licensed under the MIT license along with
 // the Transgender project
 
-package suat.androgen;
+syntax = "proto3";
+
+package ing.enbieskiss.transgender.suat.androgen;
+
+message InitSuperblock {
+  bytes magic_sequence = 1;
+  bytes corpus_body_hash = 2;
+  uint32 cpu_threads = 3;
+  uint64 ram_size = 4;
+  uint16 compiler_version_minor = 5;
+  uint16 compiler_version_major = 6;
+  uint16 compiler_version_build = 7;
+  string compiler_version_flags = 8;
+  uint32 target_count = 9;
+  uint32 first_target_offset = 10;
+}
 

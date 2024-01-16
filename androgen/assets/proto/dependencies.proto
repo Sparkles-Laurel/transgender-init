@@ -1,0 +1,15 @@
+// dependencies.proto - Dependencies Protocol Buffer message
+// Copyright (c) 2024 Kıvıcım L. Öztürk.
+// See LICENSE at the project rood.
+
+syntax = "proto3";
+
+package ing.enbieskiss.transgender.suat.androgen;
+
+message Dependencies {
+  repeated string needs = 1;
+  repeated string uses = 2;
+  repeated string wants = 3;
+  repeated string before = 4;
+  repeated string after = 5;
+}

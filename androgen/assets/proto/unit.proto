@@ -1,4 +1,19 @@
 // unit.proto - Androgen unit file message type
 // Copyrhight (c) 2024 Kıvılcım Leyla Öztürk
 
-package suat.androgen;
+package ing.enbieskiss.transgender.suat.androgen;
+
+syntax = "proto3";
+
+import "dependencies.proto";
+
+message Service {
+  string name = 1;
+  string description = 2;
+  string exec_start = 3;
+  string exec_stop = 4;
+  string exec_reload = 5;
+  string exec_restart = 6;
+  Dependencies dependencies = 7;
+  repeated string conflicts = 8;
+}
