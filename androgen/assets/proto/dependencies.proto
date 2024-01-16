@@ -1,6 +1,6 @@
 // dependencies.proto - Dependencies Protocol Buffer message
-// Copyright (c) 2024 Kıvıcım L. Öztürk.
-// See LICENSE at the project rood.
+// Copyright (c) 2024 Kıvılcım L. Öztürk.
+// See LICENSE at the project root.
 
 syntax = "proto3";
 
