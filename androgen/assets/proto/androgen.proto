@@ -1,0 +1,7 @@
+// androgen.proto - Androgen header protocol buffer.
+// Copyright (c) 2024 Kıvılcım L. Öztürk
+// licensed under the MIT license along with
+// the Transgender project
+
+package suat.androgen;
+
