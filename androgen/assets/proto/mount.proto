@@ -1,0 +1,49 @@
+// mount.proto - device mount and auto-mount support
+// this is a protobuf specification file, used to generate Rust code
+// Copyright (c) 2024 Kıvılcım Leyla Öztürk
+// licensed as the same as the Speeding Up and Acceleration Technology (SUAT)
+// which is a subproject of the Transgender init daemon
+
+syntax = "proto3";
+package ing.enbieskiss.transgender.suat.androgen;
+
+
+// Mount is the specification of a mount point
+message Mount {
+    // the path to mount the device at
+    string path = 1;
+    // the device to mount
+    string device = 2;
+    // the filesystem type to mount
+    string fstype = 3;
+    // the mount options
+    string options = 4;
+    // the dump frequency
+    int32 dumpfreq = 5;
+    // the pass number
+    int32 passno = 6;
+}
+
+// AutoMount is the specification of an auto-mount point
+message AutoMount {
+    // the path to mount the device at
+    string path = 1;
+    // the device to mount
+    string device = 2;
+    // the filesystem type to mount
+    string fstype = 3;
+    // the mount options
+    string options = 4;
+    // the dump frequency
+    int32 dumpfreq = 5;
+    // the pass number
+    int32 passno = 6;
+    // the mount point type
+    string mptype = 7;
+    // the mount point options
+    string mpoptions = 8;
+    // the mount point dump frequency
+    int32 mpdumpfreq = 9;
+    // the mount point pass number
+    int32 mppassno = 10;
+}
