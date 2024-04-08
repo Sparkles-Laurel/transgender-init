@@ -1,0 +1,9 @@
+// mount.proto - device mount and auto-mount support
+// this is a protobuf specification file, used to generate Rust code
+// Copyright (c) 2024 Kıvılcım Leyla Öztürk
+// licensed as the same as the Speeding Up and Acceleration Technology (SUAT)
+// which is a subproject of the Transgender init daemon
+
+syntax = "proto3";
+package lgbt.initramfs.transgender.suat.androgen;
+

@@ -4,7 +4,7 @@
 
 syntax = "proto3";
 
-package ing.enbieskiss.transgender.suat.androgen;
+package lgbt.initramfs.transgender.suat.androgen;
 
 message Dependencies {
   repeated string needs = 1;
