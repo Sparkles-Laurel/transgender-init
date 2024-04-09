@@ -1,0 +1,78 @@
+[package]
+name = "kanit-rc"
+version.workspace = true
+edition.workspace = true
+
+[features]
+default = ["units"]
+units = ["kanit-units"]
+testing = ["kanit-units?/testing"]
+rkyv = [
+    "dep:rkyv",
+    "kanit-supervisor/rkyv",
+    "kanit-unit/rkyv"
+]
+serde = [
+    "dep:serde",
+    "kanit-supervisor/serde",
+    "kanit-unit/serde"
+]
+postcard = ["dep:postcard", "serde"]
+
+[dependencies.send_wrapper]
+version = "0.6.0"
+
+[dependencies.postcard]
+version = "1.0.8"
+features = ["use-std"]
+optional = true
+
+[dependencies.rkyv]
+version = "0.7.44"
+features = ["validation"]
+optional = true
+
+[dependencies.serde]
+version = "1.0.197"
+features = ["derive", "rc"]
+optional = true
+
+[dependencies.async-lock]
+version = "3.3.0"
+
+[dependencies.async-process]
+version = "2.1.0"
+
+[dependencies.async-trait]
+version = "0.1.77"
+
+[dependencies.log]
+version = "0.4.21"
+features = ["std"]
+
+[dependencies.nix]
+version = "0.28"
+features = [
+    "signal",
+    "process"
+]
+
+[dependencies.kanit-units]
+path = "../units"
+optional = true
+
+[dependencies.kanit-unit]
+path = "../unit"
+
+[dependencies.kanit-diagnostics]
+path = "../diagnostics"
+
+[dependencies.kanit-executor]
+path = "../executor"
+
+[dependencies.kanit-supervisor]
+path = "../supervisor"
+
+[dependencies.kanit-common]
+path = "../common"
+

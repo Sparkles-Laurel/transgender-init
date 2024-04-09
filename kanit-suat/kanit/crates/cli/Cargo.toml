@@ -1,0 +1,45 @@
+[package]
+name = "kanit-cli"
+version.workspace = true
+edition.workspace = true
+
+[features]
+blame = []
+service = [
+    "toml",
+    "atomic-write-file",
+    "kanit-rc",
+    "kanit-unit",
+    "kanit-rc/serde"
+]
+rkyv = ["service", "kanit-rc/rkyv"]
+postcard = ["service", "kanit-rc/postcard"]
+
+[dependencies.atomic-write-file]
+version = "0.1.3"
+optional = true
+
+[dependencies.toml]
+version = "0.8.11"
+features = ["parse"]
+default-features = false
+optional = true
+
+[dependencies.xflags]
+version = "0.3.2"
+
+[dependencies.nix]
+version = "0.28"
+features = ["user", "reboot"]
+
+[dependencies.kanit-rc]
+path = "../rc"
+optional = true
+default-features = false
+
+[dependencies.kanit-unit]
+path = "../unit"
+optional = true
+
+[dependencies.kanit-common]
+path = "../common"

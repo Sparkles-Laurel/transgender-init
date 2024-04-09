@@ -1,0 +1,16 @@
+[package]
+name = "kanit-executor"
+version.workspace = true
+edition.workspace = true
+
+[dependencies.futures-lite]
+version = "2.3.0"
+
+[dependencies.send_wrapper]
+version = "0.6.0"
+
+[dependencies.async-io]
+version = "2.3.2"
+
+[dependencies.async-executor]
+version = "1.8.0"

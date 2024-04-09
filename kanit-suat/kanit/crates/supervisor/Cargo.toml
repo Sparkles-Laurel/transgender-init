@@ -1,0 +1,30 @@
+[package]
+name = "kanit-supervisor"
+version.workspace = true
+edition.workspace = true
+
+[features]
+serde = ["dep:serde"]
+rkyv = ["dep:rkyv"]
+cli = ["dep:xflags", "nix/signal"]
+
+[dependencies.serde]
+version = "1.0"
+features = ["derive"]
+optional = true
+
+[dependencies.rkyv]
+version = "0.7"
+features = ["validation"]
+optional = true
+
+[dependencies.xflags]
+version = "0.3.2"
+optional = true
+
+[dependencies.nix]
+version = "0.28"
+features = ["user"]
+
+[dependencies.kanit-common]
+path = "../common"

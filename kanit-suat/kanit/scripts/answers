@@ -1,0 +1,19 @@
+KEYMAPOPTS="us us"
+HOSTNAMEOPTS=alpine
+DEVDOPTS=mdev
+INTERFACESOPTS="auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+hostname alpine-test
+"
+TIMEZONEOPTS="UTC"
+PROXYOPTS=none
+APKREPOSOPTS="-1"
+USEROPTS=none
+SSHDOPTS=none
+NTPOPTS="openntpd"
+DISKOPTS="-m sys /dev/sda"
+LBUOPTS=none
+APKCACHEOPTS=none

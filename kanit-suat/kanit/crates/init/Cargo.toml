@@ -1,0 +1,50 @@
+[package]
+name = "kanit-init"
+version.workspace = true
+edition.workspace = true
+
+[features]
+baked-rc = ["kanit-rc"]
+timings = ["kanit-diagnostics/timings"]
+testing = ["kanit-diagnostics/tap", "kanit-rc?/testing"]
+rkyv = ["kanit-rc?/rkyv"]
+postcard = ["kanit-rc?/postcard"]
+
+[dependencies.futures-lite]
+version = "2.2.0"
+
+[dependencies.async-fs]
+version = "2.1.1"
+
+[dependencies.async-signal]
+version = "0.2.5"
+
+[dependencies.nix]
+version = "0.28"
+features = [
+    "reboot",
+    "signal",
+    "fs",
+    "feature",
+    "process",
+    "ioctl"
+]
+
+[dependencies.libc]
+version = "0.2"
+
+[dependencies.log]
+version = "0.4.21"
+
+[dependencies.kanit-diagnostics]
+path = "../diagnostics"
+
+[dependencies.kanit-executor]
+path = "../executor"
+
+[dependencies.kanit-common]
+path = "../common"
+
+[dependencies.kanit-rc]
+path = "../rc"
+optional = true

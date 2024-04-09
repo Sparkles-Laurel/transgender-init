@@ -1,0 +1,33 @@
+when:
+  - event: pull_request
+  - event: push
+
+steps:
+  - name: lint
+    image: 'rust:1.75-bookworm'
+    commands:
+      - apt update
+      - apt install -y musl-dev
+      - rustup component add clippy rustfmt
+      - rustup target add x86_64-unknown-linux-musl
+      - cargo clippy -- --no-deps -Dwarnings
+      - cargo clippy --no-default-features --features timings,baked-rc,cli,postcard -- --no-deps -Dwarnings
+      - cargo fmt -- --check
+  - name: test
+    image: 'rust:1.75-bookworm'
+    depends_on:
+      - lint
+    commands:
+      - wget -qO - 'https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub' |
+        gpg --dearmor > /usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg
+      - echo "deb [arch=all,$(dpkg --print-architecture) signed-by=/usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg] https://proget.makedeb.org prebuilt-mpr bookworm" >
+        /etc/apt/sources.list.d/prebuilt-mpr.list
+      - apt update
+      - apt install -y musl-dev expect qemu-utils qemu-system-x86 just
+      - rustup target add x86_64-unknown-linux-musl
+      - curl -o tapview "https://gitlab.com/esr/tapview/-/raw/master/tapview"
+      - chmod +x ./tapview
+      - cargo build --package kanit-multicall --features testing
+      - just patch-image
+      - sleep 2.5
+      - qemu-system-x86_64 -m 512 -nic user -hda alpine.qcow2 -nographic | ./tapview

@@ -1,0 +1,24 @@
+#!/usr/bin/env expect
+
+set IMAGE [lindex $argv 0]
+set BAKERY_SCRIPT [read [open "bakery.sh"]]
+set timeout -1
+
+spawn qemu-system-x86_64 -m 512 -nic user -hda $IMAGE -nographic -virtfs local,path=./tmp.share,mount_tag=host0,security_model=mapped,id=host0
+
+expect "login: "
+send "root\n"
+
+expect "# "
+send "echo '$BAKERY_SCRIPT' > bakery.sh\n"
+
+expect "# "
+send "ash bakery.sh\n"
+
+expect "# "
+send "openrc shutdown\n"
+
+expect "# "
+send "poweroff\n"
+
+expect eof

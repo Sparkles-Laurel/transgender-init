@@ -1,0 +1,33 @@
+[package]
+name = "kanit-unit"
+version.workspace = true
+edition.workspace = true
+
+[features]
+rkyv = ["dep:rkyv"]
+serde = ["dep:serde"]
+
+[dependencies.serde]
+version = "1.0.197"
+features = ["derive", "rc"]
+optional = true
+
+[dependencies.rkyv]
+version = "0.7.44"
+features = ["validation"]
+optional = true
+
+[dependencies.async-process]
+version = "2.1.0"
+
+[dependencies.async-trait]
+version = "0.1.78"
+
+[dependencies.send_wrapper]
+version = "0.6.0"
+
+[dependencies.kanit-supervisor]
+path = "../supervisor"
+
+[dependencies.kanit-common]
+path = "../common"

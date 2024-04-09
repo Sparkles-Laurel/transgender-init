@@ -1,0 +1,57 @@
+#!/usr/bin/env expect
+
+set IMAGE [lindex $argv 0]
+set ANSWER_DATA [read [open "answers"]]
+set MOUNT_SCRIPT [read [open "mount.sh"]]
+set UMOUNT_SCRIPT [read [open "umount.sh"]]
+set KERNEL_OPTS "quiet rootfstype=ext4 console=ttyS0"
+set timeout -1
+
+spawn qemu-system-x86_64 -m 512 -nic user -boot d -cdrom $IMAGE -hda alpine.qcow2 -nographic
+
+expect "login: "
+send "root\n"
+
+expect "# "
+send "echo '$ANSWER_DATA' > answers\n"
+
+expect "# "
+send "echo '$MOUNT_SCRIPT' > mount.sh\n"
+
+expect "# "
+send "echo '$UMOUNT_SCRIPT' > umount.sh\n"
+
+expect "# "
+send "setup-alpine -f answers -e\n"
+
+# expect "password: "
+# send "\n"
+
+# expect "Retype password: "
+# send "\n"
+
+expect "\\\[n\\\] "
+send "y\n"
+
+expect "# "
+send "ash mount.sh\n"
+
+expect "# "
+send "chroot /mnt\n"
+
+expect "# "
+send "echo 'default_kernel_opts=\"$KERNEL_OPTS\"' >> /etc/update-extlinux.conf\n"
+
+expect "# "
+send "update-extlinux\n"
+
+expect "# "
+send "exit\n"
+
+expect "# "
+send "ash umount.sh\n"
+
+expect "# "
+send "poweroff\n"
+
+expect eof

@@ -1,0 +1,46 @@
+# This just exists because libguestfs didn't want to work for me
+
+debug:
+  distrobox-host-exec cargo build --package kanit-multicall
+  just -f {{justfile()}} boot-vm debug false -enable-kvm
+
+release:
+  distrobox-host-exec cargo build --release --package kanit-multicall
+  just -f {{justfile()}} boot-vm release true -enable-kvm
+
+min:
+  distrobox-host-exec cargo +nightly build -Z build-std=std,panic_abort -Z \
+    build-std-features=panic_immediate_abort --profile min --package kanit-multicall
+  just -f {{justfile()}} boot-vm min true -enable-kvm
+
+test:
+  distrobox-host-exec cargo build --package kanit-multicall --features testing
+  just -f {{justfile()}} boot-vm debug true -enable-kvm
+
+vm-image:
+  [ -f "alpine.qcow2" ] || distrobox-host-exec {{justfile_directory()}}/scripts/prepare-vm.sh
+
+patch-image: vm-image
+  {{justfile_directory()}}/scripts/bake-vm.sh debug alpine.qcow2
+
+clean-vm mounted="false": vm-image
+  {{mounted}} || mkdir -p rootfs
+  {{mounted}} || guestmount -a alpine.qcow2 -i rootfs
+  rm -f ./rootfs/var/lib/kan.db
+  {{mounted}} || guestunmount rootfs
+  {{mounted}} || rm -rf rootfs
+
+boot-vm target clean="false" *qemu="": vm-image
+  mkdir -p rootfs
+  guestmount -a alpine.qcow2 -i rootfs
+  cp target/x86_64-unknown-linux-musl/{{target}}/kanit-multicall rootfs/sbin/kanit-multicall
+  cd rootfs \
+    && ln -sf /sbin/kanit-multicall ./sbin/init \
+    && ln -sf /sbin/kanit-multicall ./sbin/kanit \
+    && ln -sf /sbin/kanit-multicall ./sbin/kanit-supervisor
+  ({{clean}} \
+    && just -f {{justfile()}} clean-vm true) || true
+  guestunmount rootfs
+  rm -rf rootfs
+  sleep 2.5 # wait for lock to release
+  distrobox-host-exec qemu-system-x86_64 -m 512 -nic user -hda alpine.qcow2 -nographic {{qemu}}

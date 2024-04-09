@@ -15,7 +15,6 @@
 #   include <fcntl.h>
 #   include <sys/stat.h>
 #   include <stddef.h>
-#   include <__stddef_size_t.h>
     
     /// Represents file handles that will be used by dlfcn.h and unistd.h
     typedef struct {

@@ -1,0 +1,59 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/init",
+    "crates/cli",
+    "crates/rc",
+    "crates/common",
+    "crates/supervisor",
+    "crates/executor",
+    "crates/diagnostics",
+    "crates/units",
+    "crates/unit"
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort" # we just forever loop anyway
+strip = "debuginfo"
+
+[profile.min]
+inherits = "release"
+strip = true
+opt-level = "z"
+
+[package]
+name = "kanit-multicall"
+version.workspace = true
+edition.workspace = true
+
+[features]
+default = ["timings", "baked-rc", "rkyv", "cli"]
+cli = ["dep:kanit-cli"]
+timings = ["kanit-init/timings", "kanit-cli?/blame"]
+baked-rc = ["kanit-init/baked-rc"]
+testing = ["kanit-init/testing"]
+rkyv = [
+    "kanit-init/rkyv",
+    "kanit-cli?/rkyv"
+]
+postcard = [
+    "kanit-init/postcard",
+    "kanit-cli?/postcard"
+]
+
+[dependencies.kanit-cli]
+path = "./crates/cli"
+optional = true
+
+[dependencies.kanit-init]
+path = "./crates/init"
+
+[dependencies.kanit-supervisor]
+path = "./crates/supervisor"
+features = ["cli"]
